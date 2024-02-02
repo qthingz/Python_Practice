@@ -1,0 +1,25 @@
+import requests
+from bs4 import BeautifulSoup
+import pandas as pd
+
+url = ''
+response = requests.get(url)
+soup = BeautifulSoup(response.text, 'html.parser')
+table = soup.find('table', {'class': ''})
+
+# print(table)
+
+data = []
+for row in table.find_all('tr'):
+    columns = row.find_all('td')
+    row_data = [col.get_text(strip=True)for col in columns]
+    data.append(row_data)
+
+# print(data)
+
+header = data [1]
+
+df = pd.DataFrame(data[1:], columns = header)
+df
+
+df.to_csv('', index = False, header = True)
